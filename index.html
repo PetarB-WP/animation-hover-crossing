@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+	<title>Hover Crossing</title>
+    <link rel="stylesheet" href="main.css">
+
+</head>
+<body>
+	<!-- left-fixed info element -->
+	<div id="resInfo" class="res-info">
+		<div class="desc">Move mouse over element, check button for 3D hover effect</div>
+		<div class="side">
+			<span>Attack edge</span>
+			<span class="edge"></span>
+		</div>
+		<div class="button">
+			<button id="button3d" onclick="select_3d(this)">3D</button>
+		</div>
+	</div>
+	
+	<!-- elements frame -->
+	<div class="elements-frame">
+		<div class="group-frame">		
+			<div class="element el-1">
+				<div class="frame-overlap perspe-s">		
+					<div class="overlap">
+						<h3>Element 1</h3>
+						<p>Description 1</p>
+					</div>
+				</div>
+			</div>	
+			<div class="element el-2">
+				<div class="frame-overlap perspe-s">				
+					<div class="overlap">
+						<h3>Element 2</h3>
+						<p>Description 2</p>
+					</div>
+				</div>
+			</div>
+			<div class="element el-3">
+				<div class="frame-overlap perspe-s">
+					<div class="overlap">
+						<h3>Element 3</h3>
+						<p>Description 3</p>
+					</div>
+				</div>
+			</div>	
+			<div class="element el-4">
+				<div class="frame-overlap perspe-s">
+					<div class="overlap">
+						<h3>Element 4</h3>
+						<p>Description 4</p>
+					</div>
+				</div>
+			</div>
+			<div class="element el-5">
+				<div class="frame-overlap perspe-s">
+					<div class="overlap">
+						<h3>Element 5</h3>
+						<p>Description 5</p>
+					</div>
+				</div>
+			</div>
+			<div class="element el-6">
+				<div class="frame-overlap perspe-s">
+					<div class="overlap">
+						<h3>Element 6</h3>
+						<p>Description 6</p>
+					</div>
+				</div>
+			</div>
+			<div class="element el-7">
+				<div class="frame-overlap perspe-s">
+					<div class="overlap">
+						<h3>Element 7</h3>
+						<p>Description 7</p>
+					</div>
+				</div>
+			</div>
+			<div class="element el-8">
+				<div class="frame-overlap perspe-s">				
+					<div class="overlap">
+						<h3>Element 8</h3>
+						<p>Description 8</p>
+					</div>
+				</div>
+			</div>
+			<div class="element el-9">
+				<div class="frame-overlap perspe-s">				
+					<div class="overlap">
+						<h3>Element 9</h3>
+						<p>Description 9</p>
+					</div>
+				</div>
+			</div>
+			<div class="element el-10">
+				<div class="frame-overlap perspe-s">
+					<div class="overlap">
+						<h3>Element 10</h3>
+						<p>Description 10</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><!-- END element frame -->
+
+	<script>
+	
+		const elements = document.querySelectorAll(".element");	
+		const res_info = document.getElementById("resInfo");
+		let three_d = true;
+		
+		elements.forEach(function(el){
+			el.addEventListener("mouseenter", getCoordinates);
+			el.addEventListener("mouseleave", getCoordinates);
+		});
+		
+		function runAnm(x,y,el,evType){
+		
+			console.log("--------------------------------");
+			console.log("width element: " + el.offsetWidth + " height element: " + el.offsetHeight);
+			console.log("mouse x: " + x + " mouse y: " + y);
+			
+			let res =  translate(x,y,el);
+			console.log("Xt: " + res[0] + " Yt: " + res[1]);
+			
+			let rot = rotate(res[0],res[1], -45);
+			console.log("Xr: " + rot[0] + " Yr: " + rot[1]);
+			
+			let x2 = rot[0];
+			let y2 = rot[1];
+			
+			el.classList.remove("in-top-t","out-top-t","in-right-t","out-right-t","in-bottom-t","out-bottom-t","in-left-t","out-left-t");
+			el.classList.remove("in-top-r","out-top-r","in-right-r","out-right-r","in-bottom-r","out-bottom-r","in-left-r","out-left-r");
+				
+			if(x2 < 0 && y2 > 0){ 
+				res_info.children[1].children[1].innerHTML = "LEFT";
+				
+				if(evType == "mouseenter"){
+					three_d ? el.classList.add("in-left-t") : el.classList.add("in-left-r");
+				}else{
+					three_d ? el.classList.add("out-left-t") : el.classList.add("out-left-r");
+				}				
+			}
+			if(x2 >= 0 && y2 >= 0){ 
+				res_info.children[1].children[1].innerHTML = "BOTTOM";
+				
+				if(evType == "mouseenter"){
+					three_d ? el.classList.add("in-bottom-t") : el.classList.add("in-bottom-r");
+				}else{
+					three_d ? el.classList.add("out-bottom-t") : el.classList.add("out-bottom-r");
+				}
+			}
+			if(x2 > 0 && y2 < 0){ 
+				res_info.children[1].children[1].innerHTML = "RIGHT"; 
+				
+				if(evType == "mouseenter"){
+					three_d ? el.classList.add("in-right-t") : el.classList.add("in-right-r");
+				}else{
+					three_d ? el.classList.add("out-right-t") : el.classList.add("out-right-r");
+				}
+			}
+			if(x2 < 0 && y2 < 0){ 
+				res_info.children[1].children[1].innerHTML = "TOP"; 
+				
+				if(evType == "mouseenter"){
+					three_d ? el.classList.add("in-top-t") : el.classList.add("in-top-r");
+				}else{
+					three_d ? el.classList.add("out-top-t") : el.classList.add("out-top-r");
+				}
+			}
+		}
+			
+		function getCoordinates(event){
+			runAnm(event.offsetX, event.offsetY, event.target, event.type);
+		}
+		
+		// translate current x and y position by half width and height ( move the coordinate system in the center )
+		function translate(x,y,element){
+			return [x - element.offsetWidth/2, y - element.offsetHeight/2];
+		}
+		
+		// x,y - current position of the mouse
+		// r - angle rotation
+		function rotate(x,y,r){
+		
+			let angle = Math.PI.toFixed(2) / (180 / r);
+			let x2 = Math.cos(angle) * x - Math.sin(angle) * y;
+			let y2 = Math.sin(angle) * x + Math.cos(angle) * y;
+			
+			return [x2.toFixed(2),y2.toFixed(2)];
+		}
+		
+		function select_3d(btn){
+			if( three_d){
+				btn.classList.add("three-d");
+				three_d = false;
+			}
+			else{
+				btn.classList.remove("three-d");
+				three_d = true;
+			}
+		}
+	</script>
+</body>
+</html>
